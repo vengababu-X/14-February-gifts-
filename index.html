@@ -6,27 +6,19 @@
 <title>A Story of Us</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Montserrat:wght@200;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
-:root { --bg:#fdfaf7; }
 body{
   font-family:'Montserrat',sans-serif;
-  background:var(--bg);
+  background:#fdfaf7;
   color:#4a4242;
   overflow-x:hidden;
 }
 .serif{font-family:'Cormorant Garamond',serif;}
 .hidden{display:none!important}
 .fade{animation:fadeIn 1s ease}
-@keyframes fadeIn{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
-
-.garland{
-  position:fixed;top:10%;left:-10%;
-  width:120%;height:100px;
-  border-bottom:2px solid rgba(214,140,150,.2);
-  border-radius:50%;
-}
+@keyframes fadeIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
 
 .box{
   width:240px;height:220px;
@@ -45,8 +37,6 @@ body{
 </head>
 
 <body class="flex items-center justify-center min-h-screen p-6">
-
-<div class="garland"></div>
 
 <!-- INTRO -->
 <div id="intro" class="text-center fade">
@@ -80,7 +70,9 @@ body{
 
 <!-- GIFT PAGE -->
 <div id="giftPage" class="hidden text-center fade">
-  <img id="giftImg" class="w-80 h-96 object-cover rounded-2xl shadow-xl mx-auto mb-8">
+  <img id="giftImg"
+       class="w-80 h-96 object-contain rounded-2xl shadow-xl mx-auto mb-8 bg-white p-6"
+       alt="Gift Image">
   <h3 id="giftTitle" class="serif text-3xl mb-2"></h3>
   <p id="giftDesc" class="text-gray-400 italic mb-10 max-w-xs mx-auto"></p>
   <button onclick="nextGift()" class="text-rose-300 uppercase tracking-widest text-xs border-b pb-1">
@@ -125,7 +117,7 @@ const gifts=[
  {t:"Gourmet Chocolates 🍫",d:"For the sweetest person I know.",
   i:"https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=800&q=80"},
  {t:"Teddy Bear 🧸",d:"A hug whenever you need one.",
-  i:"https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80"},
+  i:"https://pngimg.com/uploads/teddy_bear/teddy_bear_PNG21.png"},
  {t:"Always Connected 📱",d:"So we are always together.",
   i:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"},
  {t:"Your Glow 💄",d:"Because you shine every single day.",
@@ -180,12 +172,11 @@ function nextGift(){
   step++;
   giftPage.classList.add("hidden");
   lid.classList.remove("open");
-
   step<gifts.length?hub.classList.remove("hidden"):startFinal();
 }
 
 function startFinal(){
-  let lines=[
+  const lines=[
     "I could give a thousand gifts…",
     "But I'd rather give you something real."
   ];
