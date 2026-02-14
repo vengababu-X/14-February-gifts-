@@ -1,447 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Story of Us</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Montserrat:wght@200;400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-cream: #fdfaf7;
-            --soft-pink: #f8e1e7;
-            --deep-rose: #d68c96;
-            --luxury-gold: #c5a059;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Story of Us</title>
 
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-cream);
-            color: #4a4242;
-            overflow: hidden;
-            touch-action: manipulation;
-        }
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Montserrat:wght@200;400;500&display=swap" rel="stylesheet">
 
-        .serif { font-family: 'Cormorant Garamond', serif; }
+<style>
+:root {
+  --bg-cream: #fdfaf7;
+  --soft-pink: #f8e1e7;
+  --deep-rose: #d68c96;
+}
 
-        /* The Rope Decoration */
-        .garland {
-            position: fixed;
-            top: 10%;
-            left: -10%;
-            width: 120%;
-            height: 100px;
-            border-bottom: 1px solid rgba(214, 140, 150, 0.2);
-            border-radius: 50%;
-            z-index: 5;
-        }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--bg-cream);
+  color: #4a4242;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 
-        .hanging-item {
-            position: absolute;
-            top: 40px;
-            transform-origin: top center;
-            animation: swing 4s ease-in-out infinite;
-        }
+.serif { font-family: 'Cormorant Garamond', serif; }
 
-        @keyframes swing {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-        }
+.hidden-state { display: none !important; }
+.fade-in { animation: fadeIn 1s ease forwards; }
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
 
-        /* Luxury Gift Box */
-        .box-container {
-            position: relative;
-            width: 240px;
-            height: 220px;
-            perspective: 1000px;
-            cursor: pointer;
-        }
+.box-container {
+  position: relative;
+  width: 240px;
+  height: 220px;
+  perspective: 1000px;
+  cursor: pointer;
+}
 
-        .box-body {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 150px;
-            background: linear-gradient(145deg, #ffffff, #fff3f5);
-            border-radius: 12px;
-            border: 1px solid rgba(214, 140, 150, 0.3);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.06);
-            z-index: 10;
-        }
+.box-body {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 150px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
 
-        .box-lid {
-            position: absolute;
-            top: 25px;
-            left: -5px;
-            width: 250px;
-            height: 50px;
-            background: #ffffff;
-            border-radius: 8px;
-            border: 1px solid rgba(214, 140, 150, 0.4);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
-            z-index: 30;
-            transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
-        }
+.box-lid {
+  position: absolute;
+  top: 25px;
+  left: -5px;
+  width: 250px;
+  height: 50px;
+  background: white;
+  border-radius: 8px;
+  transition: all 1s ease;
+}
 
-        .box-ribbon-v {
-            position: absolute;
-            left: 50%;
-            top: 0;
-            width: 40px;
-            height: 100%;
-            background: linear-gradient(to right, #e59da8, #f1b3bc, #e59da8);
-            transform: translateX(-50%);
-            z-index: 15;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
-        }
+.lid-fly {
+  transform: translateY(-150px) rotate(-20deg);
+  opacity: 0;
+}
 
-        .silk-bow {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90px;
-            height: 45px;
-            z-index: 40;
-            transition: opacity 0.5s ease;
-        }
-
-        .silk-bow::before, .silk-bow::after {
-            content: '';
-            position: absolute;
-            width: 45px;
-            height: 40px;
-            background: #e59da8;
-            border-radius: 50% 50% 10% 50%;
-            transform: rotate(35deg);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .silk-bow::after {
-            left: 45px;
-            border-radius: 50% 50% 50% 10%;
-            transform: rotate(-35deg);
-        }
-
-        .lid-fly {
-            transform: translateY(-150px) rotate(-30deg) scale(0.7);
-            opacity: 0;
-        }
-
-        .hidden-state { display: none !important; }
-        .fade-in { animation: fadeIn 1.2s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-
-        /* Hearts Background */
-        #hearts-canvas {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 100;
-        }
-    </style>
+#hearts-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+</style>
 </head>
+
 <body class="flex items-center justify-center min-h-screen p-6">
 
-    <div class="garland">
-        <div class="hanging-item" style="left: 20%"><span class="text-rose-200 text-xl">🌸</span></div>
-        <div class="hanging-item" style="left: 50%"><span class="text-rose-200 text-xl">✨</span></div>
-        <div class="hanging-item" style="left: 80%"><span class="text-rose-200 text-xl">🌹</span></div>
+<!-- INTRO -->
+<div id="screen-intro" class="text-center max-w-sm">
+  <h1 class="serif italic text-4xl mb-8">A gentle surprise, just for you.</h1>
+  <button id="btn-start" class="px-8 py-3 border border-rose-300 text-rose-400 rounded-full">
+    Enter
+  </button>
+</div>
+
+<!-- GAME -->
+<div id="screen-game" class="hidden-state text-center fade-in">
+  <h2 class="serif text-2xl italic mb-10">Collect 3 Sparkles</h2>
+  <div id="game-zone" class="relative w-80 h-80 mx-auto">
+    <button id="gift-sparkle" class="absolute text-4xl">🤍</button>
+  </div>
+  <p id="game-status" class="mt-6 text-sm">0 / 3</p>
+</div>
+
+<!-- GIFTS -->
+<div id="screen-gifts" class="hidden-state flex flex-col items-center fade-in">
+  <div id="gift-interaction">
+    <div class="box-container" onclick="openBox()">
+      <div class="box-lid" id="lid"></div>
+      <div class="box-body"></div>
     </div>
+    <p class="mt-6 italic">Tap the box</p>
+  </div>
 
-    <!-- Screen 1: Intro -->
-    <div id="screen-intro" class="text-center z-10 max-w-sm">
-        <h1 class="serif italic text-5xl text-gray-800 mb-8 leading-tight">A gentle surprise, <br> just for you.</h1>
-        <p class="font-light text-gray-400 mb-12 tracking-wide leading-relaxed">
-            I've created something special to tell you how I feel. <br> 
-            Take a breath, and let's begin.
-        </p>
-        <button id="btn-start" class="px-10 py-3 border border-rose-200 text-rose-300 uppercase tracking-[0.3em] text-xs rounded-full hover:bg-rose-50 transition-all">
-            Enter
-        </button>
-    </div>
+  <div id="gift-reveal" class="hidden-state text-center">
+    <img id="gift-photo" class="w-72 h-80 object-cover rounded-xl shadow-xl mb-6">
+    <h3 id="gift-title" class="serif text-2xl mb-2"></h3>
+    <p id="gift-desc" class="text-gray-500 mb-6"></p>
+    <button onclick="nextGift()" class="text-rose-400 underline">Next</button>
+  </div>
+</div>
 
-    <!-- Screen 2: Game -->
-    <div id="screen-game" class="hidden-state text-center z-10 fade-in">
-        <h2 class="serif text-3xl italic text-gray-600 mb-16">Collecting light...</h2>
-        <div id="game-zone" class="relative w-80 h-80 mx-auto">
-            <button id="gift-sparkle" class="absolute p-4 outline-none transition-all duration-700">
-                <div class="w-12 h-12 bg-rose-100 rounded-full blur-xl absolute inset-0 animate-ping"></div>
-                <span class="relative text-4xl opacity-80">🤍</span>
-            </button>
-        </div>
-        <p id="game-status" class="text-[10px] uppercase tracking-[0.5em] text-gray-300 mt-10">0 / 3 Sparkles</p>
-    </div>
+<!-- FINAL -->
+<div id="screen-final" class="hidden-state text-center fade-in">
+  <h1 class="serif italic text-4xl mb-10">Will you be my Valentine?</h1>
+  <button onclick="celebrate()" class="px-8 py-4 border border-rose-300 rounded-full text-rose-400">
+    YES
+  </button>
+</div>
 
-    <!-- Screen 3: Gifts -->
-    <div id="screen-gifts" class="hidden-state flex flex-col items-center w-full max-w-lg z-10">
-        <div id="gift-interaction" class="flex flex-col items-center">
-            <div class="box-container" id="gift-box" onclick="openBox()">
-                <div class="silk-bow" id="bow"></div>
-                <div class="box-lid" id="lid"></div>
-                <div class="box-body">
-                    <div class="box-ribbon-v"></div>
-                </div>
-            </div>
-            <p class="mt-16 serif italic text-gray-300 text-xl tracking-widest animate-pulse">Touch to see inside</p>
-        </div>
+<canvas id="hearts-canvas"></canvas>
 
-        <div id="gift-reveal" class="hidden-state fade-in text-center flex flex-col items-center">
-            <div class="w-80 h-96 rounded-2xl overflow-hidden shadow-2xl bg-white mb-10 border-[12px] border-white relative">
-                <img id="gift-photo" src="" class="w-full h-full object-cover transition-opacity duration-700" alt="Gift">
-            </div>
-            <h3 id="gift-title" class="serif text-3xl text-gray-800 mb-4"></h3>
-            <p id="gift-desc" class="text-gray-400 font-light text-sm max-w-[280px] mb-12 italic leading-relaxed"></p>
-            <button id="btn-next" onclick="nextGift()" class="text-[10px] uppercase tracking-[0.4em] text-rose-300 border-b border-rose-100 pb-1 hover:text-rose-400">
-                Continue the Story
-            </button>
-        </div>
-    </div>
+<audio id="guitar-player" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_115b9a6a60.mp3?filename=romantic-guitar-110731.mp3" type="audio/mpeg">
+</audio>
 
-    <!-- Screen 4: Final Question -->
-    <div id="screen-final" class="hidden-state text-center px-6 z-10">
-        <p id="final-text" class="serif italic text-3xl text-gray-500 mb-20"></p>
-        <div id="final-ask" class="hidden-state">
-            <h1 class="serif italic text-5xl text-gray-800 mb-20">Will you be my Valentine?</h1>
-            <div class="flex flex-col gap-8 items-center">
-                <button onclick="conclude()" class="w-64 py-5 rounded-full border border-rose-200 text-rose-400 tracking-[0.3em] text-xs hover:bg-rose-50 transition-all">YES</button>
-                <button onclick="conclude()" class="w-64 py-5 rounded-full bg-rose-50/50 text-rose-400 tracking-[0.3em] text-xs italic">Of Course Yes</button>
-            </div>
-        </div>
-    </div>
+<script>
+const state = {
+  sparkles: 0,
+  step: 0,
+  content: [
+    {
+      title: "Roses",
+      desc: "Soft and beautiful.",
+      image: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      title: "Chocolates",
+      desc: "A little sweetness.",
+      image: "https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      title: "Golden Sparkle",
+      desc: "Because you shine.",
+      image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80"
+    }
+  ]
+};
 
-    <!-- Celebration Overlay -->
-    <div id="screen-celebrate" class="hidden-state fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center fade-in text-center p-8">
-        <h2 class="serif text-4xl text-gray-700 mb-4">You've made me so happy.</h2>
-        <div class="text-gray-200 text-3xl">🌸 ✨ 🤍 ✨ 🌸</div>
-    </div>
+const intro = document.getElementById("screen-intro");
+const game = document.getElementById("screen-game");
+const gifts = document.getElementById("screen-gifts");
+const finalScreen = document.getElementById("screen-final");
 
-    <canvas id="hearts-canvas"></canvas>
+document.getElementById("btn-start").onclick = () => {
+  intro.classList.add("hidden-state");
+  game.classList.remove("hidden-state");
+  moveSparkle();
 
-    <!-- GUITAR MUSIC SECTION -->
-    <audio id="guitar-player" loop>
-        <!-- Replace this URL with your guitar audio link -->
-        <source src="YOUR_GUITAR_FILE_HERE.mp3" type="audio/mpeg">
-    </audio>
+  const audio = document.getElementById("guitar-player");
+  audio.volume = 0.6;
+  audio.play().catch(err => console.error(err));
+};
 
-    <script>
-        const apiKey = ""; // TTS API key provided by environment
+function moveSparkle() {
+  const sparkle = document.getElementById("gift-sparkle");
+  sparkle.style.left = Math.random()*70 + "%";
+  sparkle.style.top = Math.random()*70 + "%";
+}
 
-        const state = {
-            sparkles: 0,
-            step: 0,
-            opening: false,
-            // HIGH-QUALITY HAND-PICKED AESTHETIC IMAGES (Related to each gift)
-            content: [
-                { 
-                    title: "Boutique Roses", 
-                    desc: "Something as soft and beautiful as your heart.", 
-                    image: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=600&q=80"
-                },
-                { 
-                    title: "Gourmet Chocolates", 
-                    desc: "A little sweetness for the sweetest person I know.", 
-                    image: "https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=600&q=80"
-                },
-                { 
-                    title: "Strawberry Gelato", 
-                    desc: "A sweet treat to melt your heart.", 
-                    image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
-                },
-                { 
-                    title: "Warm Hugs", 
-                    desc: "For those moments when you need a gentle reminder of love.", 
-                    image: "https://images.unsplash.com/photo-1559454403-b8fb88521f11?auto=format&fit=crop&w=600&q=80"
-                },
-                { 
-                    title: "Always Connected", 
-                    desc: "So we never miss a single moment together.", 
-                    image: "https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=600&q=80"
-                },
-                { 
-                    title: "Boutique Makeup", 
-                    desc: "Because you deserve to shine every day.", 
-                    image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80"
-                },
-                { 
-                    title: "Golden Sparkle", 
-                    desc: "A delicate shining piece for a shining heart.", 
-                    image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80"
-                },
-                { 
-                    title: "Silk Elegance", 
-                    desc: "A beautiful dress for a beautiful soul.", 
-                    image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=600&q=80",
-                    hasVoice: true // Plays "I love you" on the final gift reveal
-                }
-            ],
-            audioCtx: null
-        };
+document.getElementById("gift-sparkle").onclick = () => {
+  state.sparkles++;
+  document.getElementById("game-status").innerText = state.sparkles + " / 3";
+  if(state.sparkles < 3) moveSparkle();
+  else {
+    game.classList.add("hidden-state");
+    gifts.classList.remove("hidden-state");
+  }
+};
 
-        // --- TTS Engine ---
-        async function playLoveVoice() {
-            try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
-                    method: 'POST', headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: "Say tenderly: I love you" }] }],
-                        generationConfig: {
-                            responseModalities: ["AUDIO"],
-                            speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Leda" } } }
-                        }
-                    })
-                });
-                const d = await res.json();
-                const pcm = d.candidates[0].content.parts[0].inlineData.data;
-                const binary = atob(pcm);
-                const bytes = new Int16Array(binary.length / 2);
-                for (let i = 0; i < binary.length; i += 2) bytes[i/2] = (binary.charCodeAt(i+1) << 8) | binary.charCodeAt(i);
-                
-                const buffer = new ArrayBuffer(44 + bytes.length * 2);
-                const view = new DataView(buffer);
-                const writeS = (o, s) => { for(let j=0; j<s.length; j++) view.setUint8(o+j, s.charCodeAt(j)); };
-                writeS(0, 'RIFF'); view.setUint32(4, 32 + bytes.length * 2, true);
-                writeS(8, 'WAVE'); writeS(12, 'fmt '); view.setUint32(16, 16, true);
-                view.setUint16(20, 1, true); view.setUint16(22, 1, true); view.setUint32(24, 24000, true);
-                view.setUint32(28, 48000, true); view.setUint16(32, 2, true); view.setUint16(34, 16, true);
-                writeS(36, 'data'); view.setUint32(40, bytes.length * 2, true);
-                for (let i = 0; i < bytes.length; i++) view.setInt16(44 + i * 2, bytes[i], true);
-                new Audio(URL.createObjectURL(new Blob([view], {type:'audio/wav'}))).play();
-            } catch(e) {}
-        }
+function openBox() {
+  document.getElementById("lid").classList.add("lid-fly");
 
-        // --- Interaction Logic ---
-        function initAudio() {
-            if (!state.audioCtx) state.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
+  setTimeout(() => {
+    document.getElementById("gift-interaction").classList.add("hidden-state");
+    document.getElementById("gift-reveal").classList.remove("hidden-state");
 
-        function playSoftTone(freq) {
-            if (!state.audioCtx) return;
-            const osc = state.audioCtx.createOscillator();
-            const gain = state.audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, state.audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.04, state.audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.0001, state.audioCtx.currentTime + 0.8);
-            osc.connect(gain); gain.connect(state.audioCtx.destination);
-            osc.start(); osc.stop(state.audioCtx.currentTime + 0.8);
-        }
+    const gift = state.content[state.step];
+    document.getElementById("gift-photo").src = gift.image;
+    document.getElementById("gift-title").innerText = gift.title;
+    document.getElementById("gift-desc").innerText = gift.desc;
+  }, 600);
+}
 
-        document.getElementById('btn-start').onclick = () => {
-            initAudio();
-            playSoftTone(660);
-            document.getElementById('guitar-player').play().catch(() => {});
-            transition('screen-intro', 'screen-game');
-            moveSparkle();
-        };
+function nextGift() {
+  state.step++;
+  document.getElementById("lid").classList.remove("lid-fly");
 
-        function moveSparkle() {
-            const sparkle = document.getElementById('gift-sparkle');
-            sparkle.style.left = `${Math.random() * 70}%`;
-            sparkle.style.top = `${Math.random() * 70}%`;
-        }
+  if(state.step < state.content.length){
+    document.getElementById("gift-reveal").classList.add("hidden-state");
+    document.getElementById("gift-interaction").classList.remove("hidden-state");
+  } else {
+    gifts.classList.add("hidden-state");
+    finalScreen.classList.remove("hidden-state");
+  }
+}
 
-        document.getElementById('gift-sparkle').onclick = () => {
-            state.sparkles++;
-            playSoftTone(660 + (state.sparkles * 100));
-            document.getElementById('game-status').innerText = `${state.sparkles} / 3 Sparkles`;
-            if (state.sparkles < 3) moveSparkle();
-            else transition('screen-game', 'screen-gifts');
-        };
+function celebrate() {
+  startHearts();
+}
 
-        async function openBox() {
-            if (state.opening) return;
-            state.opening = true;
-            playSoftTone(880);
-            
-            document.getElementById('lid').classList.add('lid-fly');
-            document.getElementById('bow').classList.add('opacity-0');
+function startHearts() {
+  const canvas = document.getElementById("hearts-canvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 
-            const gift = state.content[state.step];
-            
-            setTimeout(() => {
-                document.getElementById('gift-interaction').classList.add('hidden-state');
-                document.getElementById('gift-reveal').classList.remove('hidden-state');
-                
-                document.getElementById('gift-title').innerText = gift.title;
-                document.getElementById('gift-desc').innerText = gift.desc;
-                document.getElementById('gift-photo').src = gift.image;
-                document.getElementById('gift-photo').classList.add('opacity-100');
+  const hearts = Array.from({length:40}, () => ({
+    x: Math.random()*canvas.width,
+    y: canvas.height,
+    s: Math.random()*5+2,
+    v: Math.random()*1.5+0.5
+  }));
 
-                if (gift.hasVoice) playLoveVoice();
-            }, 800);
-        }
-
-        window.nextGift = () => {
-            playSoftTone(500);
-            state.step++;
-            state.opening = false;
-            if (state.step < state.content.length) {
-                document.getElementById('gift-reveal').classList.add('hidden-state');
-                document.getElementById('gift-interaction').classList.remove('hidden-state');
-                document.getElementById('lid').classList.remove('lid-fly');
-                document.getElementById('bow').classList.remove('opacity-0');
-                document.getElementById('gift-photo').classList.remove('opacity-100');
-            } else {
-                transition('screen-gifts', 'screen-final');
-                runFinalStory();
-            }
-        };
-
-        function transition(from, to) {
-            const f = document.getElementById(from);
-            f.style.opacity = '0';
-            setTimeout(() => {
-                f.classList.add('hidden-state');
-                document.getElementById(to).classList.remove('hidden-state');
-                document.getElementById(to).style.opacity = '1';
-            }, 800);
-        }
-
-        function runFinalStory() {
-            const txt = document.getElementById('final-text');
-            const lines = ["I could give a thousand gifts...", "But I'd rather give you something real."];
-            let i = 0;
-            const itv = setInterval(() => {
-                txt.innerText = lines[i]; i++;
-                if (i > lines.length) {
-                    clearInterval(itv);
-                    txt.classList.add('hidden-state');
-                    document.getElementById('final-ask').classList.remove('hidden-state');
-                    document.getElementById('final-ask').classList.add('fade-in');
-                }
-            }, 3000);
-        }
-
-        window.conclude = () => {
-            document.getElementById('screen-celebrate').classList.remove('hidden-state');
-            startHearts();
-        };
-
-        function startHearts() {
-            const canvas = document.getElementById('hearts-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            const hearts = Array.from({length:40}, () => ({
-                x: Math.random() * canvas.width,
-                y: canvas.height + 20,
-                s: Math.random() * 5 + 2,
-                v: Math.random() * 1.5 + 0.5
-            }));
-            function loop() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#ffccd5';
-                hearts.forEach(h => {
-                    ctx.beginPath();
-                    ctx.arc(h.x, h.y, h.s, 0, Math.PI*2);
-                    ctx.fill();
-                    h.y -= h.v;
-                    if (h.y < -10) h.y = canvas.height + 10;
-                });
-                requestAnimationFrame(loop);
-            }
-            loop();
-        }
-    </script>
+  function loop(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#ffccd5";
+    hearts.forEach(h=>{
+      ctx.beginPath();
+      ctx.arc(h.x,h.y,h.s,0,Math.PI*2);
+      ctx.fill();
+      h.y-=h.v;
+      if(h.y<0) h.y=canvas.height;
+    });
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
+</script>
 </body>
 </html>
-
