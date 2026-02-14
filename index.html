@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Story of Us</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Montserrat:wght@200;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root { --bg:#fdfaf7; }
+body{
+  font-family:'Montserrat',sans-serif;
+  background:var(--bg);
+  color:#4a4242;
+  overflow-x:hidden;
+}
+.serif{font-family:'Cormorant Garamond',serif;}
+.hidden{display:none!important}
+.fade{animation:fadeIn 1s ease}
+@keyframes fadeIn{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+
+.garland{
+  position:fixed;top:10%;left:-10%;
+  width:120%;height:100px;
+  border-bottom:2px solid rgba(214,140,150,.2);
+  border-radius:50%;
+}
+
+.box{
+  width:240px;height:220px;
+  position:relative;cursor:pointer;
+}
+.lid{
+  width:250px;height:50px;
+  background:white;border-radius:10px;
+  position:absolute;top:25px;left:-5px;
+  transition:1s;
+}
+.lid.open{transform:translateY(-150px) rotate(-30deg);opacity:0}
+
+#canvas{position:fixed;inset:0;pointer-events:none}
+</style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen p-6">
+
+<div class="garland"></div>
+
+<!-- INTRO -->
+<div id="intro" class="text-center fade">
+  <h1 class="serif italic text-5xl mb-8">Hello, Beautiful.</h1>
+  <p class="text-gray-400 mb-12">
+    I built this small space to celebrate you.<br>
+    Take a breath, and let's begin.
+  </p>
+  <button onclick="goGame()" class="px-10 py-3 border border-rose-200 text-rose-300 rounded-full">
+    Open the Story
+  </button>
+</div>
+
+<!-- GAME -->
+<div id="game" class="hidden text-center fade">
+  <h2 class="serif italic text-3xl mb-12">Collecting light...</h2>
+  <div class="relative w-80 h-80 mx-auto">
+    <div id="heart" class="absolute text-4xl cursor-pointer">🤍</div>
+  </div>
+  <p id="count" class="mt-10 text-gray-300 uppercase tracking-widest">0 / 3 Found</p>
+</div>
+
+<!-- GIFT HUB -->
+<div id="hub" class="hidden text-center fade">
+  <div class="box mx-auto" onclick="openBox()">
+    <div id="lid" class="lid"></div>
+    <div class="absolute bottom-0 w-full h-36 bg-white rounded-xl shadow"></div>
+  </div>
+  <p class="mt-16 serif italic text-gray-300 text-xl">Touch to see inside</p>
+</div>
+
+<!-- GIFT PAGE -->
+<div id="giftPage" class="hidden text-center fade">
+  <img id="giftImg" class="w-80 h-96 object-cover rounded-2xl shadow-xl mx-auto mb-8">
+  <h3 id="giftTitle" class="serif text-3xl mb-2"></h3>
+  <p id="giftDesc" class="text-gray-400 italic mb-10 max-w-xs mx-auto"></p>
+  <button onclick="nextGift()" class="text-rose-300 uppercase tracking-widest text-xs border-b pb-1">
+    Next Gift
+  </button>
+</div>
+
+<!-- FINAL STORY -->
+<div id="finalStory" class="hidden text-center fade">
+  <p id="storyText" class="serif italic text-3xl text-gray-500 mb-20"></p>
+</div>
+
+<!-- QUESTION -->
+<div id="question" class="hidden text-center fade">
+  <h1 class="serif italic text-5xl mb-20">Will you be my Valentine? ❤️</h1>
+  <button onclick="celebrate()" class="w-64 py-5 border border-rose-200 text-rose-400 rounded-full uppercase">
+    YES
+  </button>
+</div>
+
+<!-- CELEBRATION -->
+<div id="celebration" class="hidden fixed inset-0 bg-white flex flex-col items-center justify-center fade">
+  <h2 class="serif text-4xl mb-4">You've made me so happy.</h2>
+  <div class="text-3xl text-gray-200">🌸 ✨ 🤍 ✨ 🌸</div>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<!-- MUSIC -->
+<audio id="music">
+  <source src="https://cdn.pixabay.com/download/audio/2022/02/23/audio_4c2f6dba9b.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+window.speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+
+let taps=0, step=0;
+
+const gifts=[
+ {t:"Boutique Roses 🌹",d:"Something as soft as your heart.",
+  i:"https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=800&q=80"},
+ {t:"Gourmet Chocolates 🍫",d:"For the sweetest person I know.",
+  i:"https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=800&q=80"},
+ {t:"Teddy Bear 🧸",d:"A hug whenever you need one.",
+  i:"https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80"},
+ {t:"Always Connected 📱",d:"So we are always together.",
+  i:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"},
+ {t:"Your Glow 💄",d:"Because you shine every single day.",
+  i:"https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80"},
+ {t:"Pure Sparkle 📿",d:"A delicate piece for a beautiful soul.",
+  i:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80"},
+ {t:"Silk Elegance 👗",d:"A beautiful dress for a beautiful person.",
+  i:"https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=800&q=80"},
+ {t:"Sweet Treat 🍦",d:"A little ice cream to melt your heart.",
+  i:"https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=800&q=80"},
+ {t:"Music From My Heart 🎵",d:"Listen carefully… I love you.",
+  i:"https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=800&q=80",
+  music:true}
+];
+
+function goGame(){
+  intro.classList.add("hidden");
+  game.classList.remove("hidden");
+  moveHeart();
+}
+
+function moveHeart(){
+  heart.style.left=Math.random()*70+"%";
+  heart.style.top=Math.random()*70+"%";
+}
+
+heart.onclick=()=>{
+  taps++;
+  count.innerText=`${taps} / 3 Found`;
+  taps<3?moveHeart():(game.classList.add("hidden"),hub.classList.remove("hidden"));
+};
+
+function openBox(){
+  lid.classList.add("open");
+  setTimeout(()=>{hub.classList.add("hidden");showGift()},600);
+}
+
+function showGift(){
+  const g=gifts[step];
+  giftImg.src=g.i;
+  giftTitle.innerText=g.t;
+  giftDesc.innerText=g.d;
+  giftPage.classList.remove("hidden");
+
+  if(g.music){
+    music.play();
+    speechSynthesis.speak(new SpeechSynthesisUtterance("I love you"));
+  }
+}
+
+function nextGift(){
+  step++;
+  giftPage.classList.add("hidden");
+  lid.classList.remove("open");
+
+  step<gifts.length?hub.classList.remove("hidden"):startFinal();
+}
+
+function startFinal(){
+  let lines=[
+    "I could give a thousand gifts…",
+    "But I'd rather give you something real."
+  ];
+  let i=0;
+  finalStory.classList.remove("hidden");
+  const t=setInterval(()=>{
+    storyText.innerText=lines[i++];
+    if(i>=lines.length){
+      clearInterval(t);
+      setTimeout(()=>{
+        finalStory.classList.add("hidden");
+        question.classList.remove("hidden");
+      },3000);
+    }
+  },3000);
+}
+
+function celebrate(){
+  question.classList.add("hidden");
+  celebration.classList.remove("hidden");
+  startHearts();
+}
+
+function startHearts(){
+  const c=canvas,ctx=c.getContext("2d");
+  c.width=innerWidth;c.height=innerHeight;
+  const hearts=[...Array(40)].map(()=>({x:Math.random()*c.width,y:c.height,r:Math.random()*6+3,v:Math.random()*2+.5}));
+  (function loop(){
+    ctx.clearRect(0,0,c.width,c.height);
+    ctx.fillStyle="#ffccd5";
+    hearts.forEach(h=>{
+      ctx.beginPath();ctx.arc(h.x,h.y,h.r,0,Math.PI*2);ctx.fill();
+      h.y-=h.v;if(h.y<0)h.y=c.height;
+    });
+    requestAnimationFrame(loop);
+  })();
+}
+</script>
+
+</body>
+</html>
